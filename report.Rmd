@@ -1,0 +1,72 @@
+---
+output: word_document
+---
+
+
+Time series Plot for in sample baseline output
+```{r, echo=F, message=FALSE, warning=F}
+setwd("C:/Users/cryanzpj/Desktop/New folder")
+baseline = read.csv("baseline_in_sample.team_2.csv")[,1:10]
+raw = read.csv("in_sample_data.csv")[,1:4]
+n = NROW(raw)
+
+
+rand_spot = raw[,2]
+rand_futures = raw[,3]+raw[,4]
+sse_rand_spot = sum((raw[725:(n-1),2] - raw[726:n,2])^2)
+sse_rand_futures = sum((raw[725:(n-1),3]+raw[725:(n-1),4] - raw[726:n,3])^2)
+
+sse_strategy_spot = sum((baseline[,9] - raw[727:n,2])^2)
+sse_strategy_futures = sum((baseline[,10] - raw[727:n,3])^2)
+Rsq_spot = 1 - sse_strategy_spot/sse_rand_spot 
+Rsq_futures = 1 - sse_strategy_futures/sse_rand_futures
+
+
+plot(baseline[,2],main ="Barrels bought or sold to pipeline" ,ylab = "Barrels bought" )
+plot(baseline[,3],main ="Future contracts bought or sold",ylab = "Contracts bought" )
+plot(baseline[,4],main ="Barrels of oil in tank \n at the end of the overnight procedure",ylab = "Barrels in storage" ,type = "l" )
+plot(baseline[,5],main ="Cash account value \n at the end of the overnight procedure",ylab = "Cash amount"  ,type = "l")
+plot(baseline[,6],main ="Future contracts \n held at the end of the overnight procedure" ,ylab = "Contracts held",type= "l" )
+plot(baseline[,7],main ="Debt value divided by the market value of oil holdings",ylab = "Debt oil ratio"  )
+plot(baseline[,8],main ="Daily profit and loss" )
+plot(baseline[,9],main ="One-day-ahdad oil_spot forecast" ,ylab = "spot price predicts" ,type = "l")
+plot(baseline[,10],main ="One-day-ahead oil_futures forecast",ylab = "future price predicts" ,type = "l" )
+
+
+```
+
+Time series Plot for in sample strategy output
+
+
+```{r, echo=F, message=FALSE, warning=F}
+
+setwd("C:/Users/cryanzpj/Desktop/New folder")
+strategy = read.csv("strategy_in_sample.team_2.csv")[,1:10]
+raw = read.csv("in_sample_data.csv")[,1:4]
+n = NROW(raw)
+
+
+rand_spot = raw[,2]
+rand_futures = raw[,3]+raw[,4]
+sse_rand_spot = sum((raw[725:(n-1),2] - raw[726:n,2])^2)
+sse_rand_futures = sum((raw[725:(n-1),3]+raw[725:(n-1),4] - raw[726:n,3])^2)
+
+sse_strategy_spot = sum((strategy[,9] - raw[727:n,2])^2)
+sse_strategy_futures = sum((strategy[,10] - raw[727:n,3])^2)
+Rsq_spot = 1 - sse_strategy_spot/sse_rand_spot 
+Rsq_futures = 1 - sse_strategy_futures/sse_rand_futures
+
+
+plot(strategy[,2],main ="Barrels bought or sold to pipeline" ,ylab = "Barrels bought" )
+plot(strategy[,3],main ="Future contracts bought or sold",ylab = "Contracts bought" )
+plot(strategy[,4],main ="Barrels of oil in tank \n at the end of the overnight procedure",ylab = "Barrels in storage" ,type = "l" )
+plot(strategy[,5],main ="Cash account value \n at the end of the overnight procedure",ylab = "Cash amount"  ,type = "l")
+plot(strategy[,6],main ="Future contracts \n held at the end of the overnight procedure" ,ylab = "Contracts held",type= "l" )
+plot(strategy[,7],main ="Debt value divided by the market value of oil holdings",ylab = "Debt oil ratio"  )
+plot(strategy[,8],main ="Daily profit and loss" )
+plot(strategy[,9],main ="One-day-ahdad oil_spot forecast" ,ylab = "spot price predicts" ,type = "l")
+plot(strategy[,10],main ="One-day-ahead oil_futures forecast",ylab = "future price predicts" ,type = "l" )
+
+cat("R square for spot forecast = ",Rsq_spot)
+cat("R square for future forecast =",Rsq_futures)
+```
